@@ -15,11 +15,13 @@ struct Track {
    var trackName = ""
     
     init(dictionary:[String:AnyObject]) {
+        
         if(dictionary["artistName"] != nil) {
             artistName = dictionary["artistName"] as! String
             artWorkUrl = dictionary["artworkUrl60"] as! String
             trackName = dictionary["trackName"] as! String
         }
+        
     }
     
 }

@@ -17,15 +17,13 @@ class Networking {
         
         dataTask?.cancel()
         
-
         if var urlComponents = URLComponents(string: "https://itunes.apple.com/search") {
             urlComponents.query = "media=music&entity=song&term=\(searchString)"
             guard let url = urlComponents.url else {return}
             dataTask = downloadSession.dataTask(with: url, completionHandler: { (data, response, error) in
-                defer {self.dataTask = nil}
                 
                 if let error =  error {
-                    //print(error)
+                     print(error)
                 }
                 else if let data = data,let response = response as? HTTPURLResponse,response.statusCode == 200
                 {
