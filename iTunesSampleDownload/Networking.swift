@@ -24,14 +24,13 @@ class Networking {
             dataTask = downloadSession.dataTask(with: url, completionHandler: { (data, response, error) in
                 
                 if let error =  error {
-                    //print(error)
+                    print(error)
                 }
                 else if let data = data,let response = response as? HTTPURLResponse,response.statusCode == 200
                 {
                     let searchDictionary = try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
                     let resultsArray = searchDictionary!["results"] as? [[String:AnyObject]]
                    
-                    print(resultsArray!)
                     
                     var sampleMusicArray = [MusicSample]()
                     
