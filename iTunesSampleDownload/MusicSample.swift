@@ -12,11 +12,11 @@ class MusicSample {
     
     let trackName:String
     let artistName:String
-    let previewUrl:URL
+    let previewUrl:String
     let index:Int
     var downloaded = false
     
-    init(trackName:String, artistName:String, previewUrl:URL, index:Int) {
+    init(trackName:String, artistName:String, previewUrl:String, index:Int) {
         self.artistName = artistName
         self.trackName = trackName
         self.previewUrl = previewUrl

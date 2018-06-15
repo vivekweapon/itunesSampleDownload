@@ -11,7 +11,7 @@ import UIKit
 class SearchViewController: UIViewController {
 
     let networkcall = Networking()
-    var tracks = [Track]()
+    var tracks = [MusicSample]()
 
     var searchTableView:UITableView = {
         let tableView = UITableView()
@@ -27,9 +27,10 @@ class SearchViewController: UIViewController {
        
         self.navigationItem.title = "iMusic Samples"
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Candies"
+        searchController.searchBar.placeholder = "Search iTunes"
+        searchController.isActive = true
+        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         definesPresentationContext = true
         
@@ -85,24 +86,20 @@ extension SearchViewController:UITableViewDataSource,UITableViewDelegate {
     }
 }
 
-extension SearchViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-    
-        if(first == false){
-            first = true
-            networkcall.downloadSampleTunes(searchString: "A R RAHMAN") { (response, error) in
-                for track in response {
-                    self.tracks.append(track)
-                }
-                
-                DispatchQueue.main.async(execute: {
-                self.searchTableView.reloadData()
-                })
+extension SearchViewController: UISearchBarDelegate {
+ 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.tracks.removeAll()
+        networkcall.downloadSampleTunes(searchString: searchBar.text!) { (response, error) in
+            for track in response {
+                self.tracks.append(track)
             }
+            
+            DispatchQueue.main.async(execute: {
+                self.searchTableView.reloadData()
+            })
         }
-     
         
-     }
+    }
 
 }
