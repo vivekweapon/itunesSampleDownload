@@ -15,23 +15,12 @@ extension SearchViewController:URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
                     didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
-        print("")
+        progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
     }
     
     
 }
 
-// MARK: - URLSessionDelegate
 
-extension SearchViewController: URLSessionDelegate {
-    
-    // Standard background session handler
-    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-//        DispatchQueue.main.async {
-//            if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-//                let completionHandler = appDelegate.backgroundSessionCompletionHandler {
-//                appDelegate.backgroundSessionCompletionHandler = nil
-//                completionHandler()
-//            }
-       }
-}
+

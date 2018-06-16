@@ -16,7 +16,6 @@
 		99EC2D7420D1199C00D5AD27 /* SearchSampleMusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7320D1199C00D5AD27 /* SearchSampleMusicCell.swift */; };
 		99EC2D7620D1270700D5AD27 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7520D1270700D5AD27 /* Networking.swift */; };
 		99EC2D7820D136DF00D5AD27 /* SearchViewController+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7720D136DF00D5AD27 /* SearchViewController+URLSessionDelegate.swift */; };
-		99EC2D7A20D142CA00D5AD27 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7920D142CA00D5AD27 /* Track.swift */; };
 		99EC2D7C20D2D61000D5AD27 /* DownloadClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7B20D2D61000D5AD27 /* DownloadClient.swift */; };
 		99EC2D7E20D2D92B00D5AD27 /* MusicDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7D20D2D92B00D5AD27 /* MusicDownload.swift */; };
 		99EC2D8020D2D96000D5AD27 /* MusicSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EC2D7F20D2D96000D5AD27 /* MusicSample.swift */; };
@@ -55,7 +54,6 @@
 		99EC2D7320D1199C00D5AD27 /* SearchSampleMusicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSampleMusicCell.swift; sourceTree = "<group>"; };
 		99EC2D7520D1270700D5AD27 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		99EC2D7720D136DF00D5AD27 /* SearchViewController+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+URLSessionDelegate.swift"; sourceTree = "<group>"; };
-		99EC2D7920D142CA00D5AD27 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		99EC2D7B20D2D61000D5AD27 /* DownloadClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadClient.swift; sourceTree = "<group>"; };
 		99EC2D7D20D2D92B00D5AD27 /* MusicDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDownload.swift; sourceTree = "<group>"; };
 		99EC2D7F20D2D96000D5AD27 /* MusicSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSample.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 				99EC2D7B20D2D61000D5AD27 /* DownloadClient.swift */,
 				99EC2D7D20D2D92B00D5AD27 /* MusicDownload.swift */,
 				99EC2D7F20D2D96000D5AD27 /* MusicSample.swift */,
-				99EC2D7920D142CA00D5AD27 /* Track.swift */,
 				99EC2D4C20D1078B00D5AD27 /* Assets.xcassets */,
 				99EC2D4E20D1078B00D5AD27 /* LaunchScreen.storyboard */,
 				99EC2D5120D1078B00D5AD27 /* Info.plist */,
@@ -280,7 +277,6 @@
 				99EC2D8020D2D96000D5AD27 /* MusicSample.swift in Sources */,
 				99EC2D7620D1270700D5AD27 /* Networking.swift in Sources */,
 				99EC2D7C20D2D61000D5AD27 /* DownloadClient.swift in Sources */,
-				99EC2D7A20D142CA00D5AD27 /* Track.swift in Sources */,
 				99EC2D7E20D2D92B00D5AD27 /* MusicDownload.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

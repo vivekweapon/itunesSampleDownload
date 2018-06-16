@@ -8,15 +8,22 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-
+class SearchViewController: UIViewController,downloadDelegate {
+   
     let networkcall = Networking()
+    let downloadclient = DownloadClient()
     var tracks = [MusicSample]()
+    var progress:Float = 0
 
     var searchTableView:UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    lazy var downloadSession:URLSession = {
+         let configuration = URLSessionConfiguration.default
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
     var first:Bool = false
@@ -38,6 +45,8 @@ class SearchViewController: UIViewController {
         searchTableView.dataSource = self
         searchTableView.register(SearchSampleMusicCell.self, forCellReuseIdentifier: "musicCell")
         setUpUI()
+        downloadclient.downloadsSession = downloadSession
+
         
     }
     
@@ -62,6 +71,21 @@ class SearchViewController: UIViewController {
         searchTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
     }
+    
+    func didDownloadTapped(with index: Int) {
+        print(index)
+        let indexpath = IndexPath(row: index, section: 0)
+        let currentCell = searchTableView.cellForRow(at: indexpath) as! SearchSampleMusicCell
+        currentCell.shapeLayer.isHidden = false
+        currentCell.trackLayer.isHidden = false
+        downloadclient.startDownload(self.tracks[index])
+
+        DispatchQueue.main.async {
+            currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
+            currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
+        }
+        
+    }
 
 }
 
@@ -82,6 +106,10 @@ extension SearchViewController:UITableViewDataSource,UITableViewDelegate {
         let sampleMusicCell = tableView.dequeueReusableCell(withIdentifier: "musicCell", for: indexPath) as! SearchSampleMusicCell
         sampleMusicCell.albumTitle.text = tracks[indexPath.row].artistName
         sampleMusicCell.artistName.text = tracks[indexPath.row].trackName
+        sampleMusicCell.tag = indexPath.row
+        sampleMusicCell.delegate = self
+        sampleMusicCell.shapeLayer.isHidden = true
+        sampleMusicCell.trackLayer.isHidden = true
         return sampleMusicCell
     }
 }

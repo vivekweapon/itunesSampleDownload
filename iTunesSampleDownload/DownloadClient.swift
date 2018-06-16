@@ -17,10 +17,11 @@ class DownloadClient {
     func startDownload(_ musicSample:MusicSample) {
         
         let musicDownload = MusicDownload(sample: musicSample)
-//        musicDownload.downloadTask = downloadsSession.downloadTask(with: musicSample.previewUrl)
-//        musicDownload.downloadTask?.resume()
-//        musicDownload.isDownloading = true
-//        activeDownloads[musicDownload.sample.previewUrl] = musicDownload
+        musicDownload.downloadTask = downloadsSession.downloadTask(with: musicSample.previewUrl)
+        
+        musicDownload.downloadTask?.resume()
+        musicDownload.isDownloading = true
+        activeDownloads[musicDownload.sample.previewUrl] = musicDownload
         
     }
     

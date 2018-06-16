@@ -9,8 +9,13 @@
 import Foundation
 import UIKit
 
+protocol downloadDelegate:class {
+    func didDownloadTapped(with index:Int)
+}
 class SearchSampleMusicCell:UITableViewCell {
     
+    weak var delegate:downloadDelegate?
+    var  animation = CABasicAnimation()
     var albumTitle: UILabel = {
         let title = UILabel()
         title.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
@@ -35,8 +40,19 @@ class SearchSampleMusicCell:UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 25.0
+       // button.titleLabel?.text = "Download"
+        button.tintColor = UIColor.blue
         
         return button
+    }()
+    
+    var downloadProgressLabel:UILabel = {
+        let label = UILabel()
+        label.text = "0%"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.sizeToFit()
+        label.font = UIFont(name: "HelveticaNeue-Thin", size: 9.0)
+        return label
     }()
     
    
@@ -45,7 +61,7 @@ class SearchSampleMusicCell:UITableViewCell {
         let shapeLayer = CAShapeLayer()
         shapeLayer.backgroundColor = UIColor.white.cgColor
         shapeLayer.lineWidth = 8.0
-        shapeLayer.strokeEnd = 0
+        //shapeLayer.strokeEnd = 0
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineCap = kCALineCapRound
         return shapeLayer
@@ -77,12 +93,12 @@ class SearchSampleMusicCell:UITableViewCell {
     }
     
     @objc private func handleTap() {
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.toValue = 1
-        animation.duration = 5
-        animation.fillMode = kCAFillModeForwards
-        animation.isRemovedOnCompletion = false
-        shapeLayer.add(animation, forKey: "downloadProgress")
+//        animation = CABasicAnimation(keyPath: "strokeEnd")
+//        animation.toValue = 1
+//        animation.fillMode = kCAFillModeForwards
+//        animation.isRemovedOnCompletion = false
+//        shapeLayer.add(animation, forKey: "downloadProgress")
+        self.delegate?.didDownloadTapped(with: self.tag)
     }
     
     private func createShapeLayer() {
@@ -102,6 +118,7 @@ class SearchSampleMusicCell:UITableViewCell {
         contentView.addSubview(albumTitle)
         contentView.addSubview(artistName)
         contentView.addSubview(downloadButton)
+        downloadButton.addSubview(downloadProgressLabel)
         setAutoLayoutConstraints()
         createTrackLayer()
         createShapeLayer()
@@ -122,6 +139,10 @@ class SearchSampleMusicCell:UITableViewCell {
         downloadButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30).isActive = true
         downloadButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         downloadButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        downloadProgressLabel.centerYAnchor.constraint(equalTo: downloadButton.centerYAnchor).isActive = true
+        downloadProgressLabel.centerXAnchor.constraint(equalTo: downloadButton.centerXAnchor).isActive = true
+        
         
     }
     
