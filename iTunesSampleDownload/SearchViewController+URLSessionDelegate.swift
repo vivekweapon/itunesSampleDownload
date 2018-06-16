@@ -9,18 +9,46 @@
 import Foundation
 extension SearchViewController:URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("")
+        guard let sourceURL = downloadTask.originalRequest?.url else { return }
+        let download = downloadclient.activeDownloads[sourceURL]
+        downloadclient.activeDownloads[sourceURL] = nil
+        // 2
+        let destinationURL = localFilePath(for: sourceURL)
+        print(destinationURL)
+        // 3
+        let fileManager = FileManager.default
+        try? fileManager.removeItem(at: destinationURL)
+        do {
+            try fileManager.copyItem(at: location, to: destinationURL)
+            download?.sample.downloaded = true
+        } catch let error {
+            print("Could not copy file to disk: \(error.localizedDescription)")
+        }
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
                     didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
-        progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        DispatchQueue.main.async {
+            self.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        }
+       
+        print(progress)
+       
+
         
     }
     
-    
 }
+
+extension SearchViewController:URLSessionDelegate {
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            }
+        }
+    }
+
 
 
 

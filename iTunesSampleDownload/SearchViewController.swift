@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
 class SearchViewController: UIViewController,downloadDelegate {
    
@@ -14,6 +16,7 @@ class SearchViewController: UIViewController,downloadDelegate {
     let downloadclient = DownloadClient()
     var tracks = [MusicSample]()
     var progress:Float = 0
+    var currentCell = SearchSampleMusicCell()
 
     var searchTableView:UITableView = {
         let tableView = UITableView()
@@ -27,6 +30,12 @@ class SearchViewController: UIViewController,downloadDelegate {
     }()
     
     var first:Bool = false
+    
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    func localFilePath(for url: URL) -> URL {
+        return documentsPath.appendingPathComponent(url.lastPathComponent)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,15 +84,17 @@ class SearchViewController: UIViewController,downloadDelegate {
     func didDownloadTapped(with index: Int) {
         print(index)
         let indexpath = IndexPath(row: index, section: 0)
-        let currentCell = searchTableView.cellForRow(at: indexpath) as! SearchSampleMusicCell
+        currentCell = searchTableView.cellForRow(at: indexpath) as! SearchSampleMusicCell
         currentCell.shapeLayer.isHidden = false
         currentCell.trackLayer.isHidden = false
         downloadclient.startDownload(self.tracks[index])
 
+
         DispatchQueue.main.async {
-            currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
-            currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
+            self.currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
+            self.currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
         }
+        
         
     }
 
@@ -111,6 +122,19 @@ extension SearchViewController:UITableViewDataSource,UITableViewDelegate {
         sampleMusicCell.shapeLayer.isHidden = true
         sampleMusicCell.trackLayer.isHidden = true
         return sampleMusicCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let playerViewController = AVPlayerViewController()
+        playerViewController.entersFullScreenWhenPlaybackBegins = true
+        playerViewController.exitsFullScreenWhenPlaybackEnds = true
+        present(playerViewController, animated: true, completion: nil)
+        let url = localFilePath(for: self.tracks[indexPath.row].previewUrl)
+        let player = AVPlayer(url: url)
+        playerViewController.player = player
+        player.play()
+        
     }
 }
 
