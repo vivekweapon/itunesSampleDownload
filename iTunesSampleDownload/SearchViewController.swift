@@ -91,8 +91,8 @@ class SearchViewController: UIViewController,downloadDelegate {
 
 
         DispatchQueue.main.async {
-            self.currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
-            self.currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
+           // self.currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
+           // self.currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
         }
         
         

@@ -40,17 +40,18 @@ class SearchSampleMusicCell:UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 25.0
-       // button.titleLabel?.text = "Download"
-        button.tintColor = UIColor.blue
+        button.setImage(UIImage(named: "download"), for: .normal)
+        //button.tintColor = UIColor.blue
         
         return button
     }()
     
     var downloadProgressLabel:UILabel = {
         let label = UILabel()
-        label.text = "0%"
+       // label.text = "0%"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.sizeToFit()
+        label.textColor = UIColor.blue
         label.font = UIFont(name: "HelveticaNeue-Thin", size: 9.0)
         return label
     }()
@@ -74,9 +75,6 @@ class SearchSampleMusicCell:UITableViewCell {
         trackLayer.fillColor = UIColor.clear.cgColor
         return trackLayer
     }()
-    
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         
@@ -104,7 +102,7 @@ class SearchSampleMusicCell:UITableViewCell {
     private func createShapeLayer() {
         let path = UIBezierPath(arcCenter: CGPoint(x: 25, y: 25), radius: 25.0, startAngle:-CGFloat.pi/2, endAngle: 2*CGFloat.pi, clockwise: true)
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.green.cgColor
+        shapeLayer.strokeColor = UIColor.red.cgColor
         
     }
     
@@ -112,6 +110,7 @@ class SearchSampleMusicCell:UITableViewCell {
         let path = UIBezierPath(arcCenter: CGPoint(x: 25, y: 25), radius: 25.0, startAngle:-CGFloat.pi/2, endAngle: 2*CGFloat.pi, clockwise: true)
         trackLayer.path = path.cgPath
         trackLayer.strokeColor = UIColor.gray.cgColor
+        
     }
     private func setUpUI() {
       
@@ -132,6 +131,7 @@ class SearchSampleMusicCell:UITableViewCell {
         albumTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15.0).isActive = true
         albumTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         albumTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
+        
         artistName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15.0).isActive = true
         artistName.topAnchor.constraint(equalTo: albumTitle.bottomAnchor, constant: 8.0).isActive = true
         
@@ -143,9 +143,29 @@ class SearchSampleMusicCell:UITableViewCell {
         downloadProgressLabel.centerYAnchor.constraint(equalTo: downloadButton.centerYAnchor).isActive = true
         downloadProgressLabel.centerXAnchor.constraint(equalTo: downloadButton.centerXAnchor).isActive = true
         
+    }
+    
+    func configureCell(){
         
     }
     
+    func updateDisplay(progress: Float, totalSize : String) {
+        shapeLayer.strokeEnd = CGFloat(progress)
+        if(progress == 1.0){
+           
+            downloadButton.setImage(UIImage(named: "downloadSuccess"), for: .normal)
+            downloadProgressLabel.isHidden = true
+            shapeLayer.isHidden = true
+            trackLayer.isHidden = true
+            
+        }
+        else {
+            downloadButton.setImage(nil, for: .normal)
+        }
+        downloadProgressLabel.text = String(format: "%.1f%%", progress * 100)
+
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
     }

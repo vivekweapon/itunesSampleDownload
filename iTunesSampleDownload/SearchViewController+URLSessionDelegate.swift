@@ -30,11 +30,13 @@ extension SearchViewController:URLSessionDownloadDelegate {
                     didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
         
+        
+    let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite,
+                                                  countStyle: .file)
+        
         DispatchQueue.main.async {
-            self.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+             self.currentCell.updateDisplay(progress: Float(totalBytesWritten) / Float(totalBytesExpectedToWrite), totalSize: totalSize)
         }
-       
-        print(progress)
        
 
         
