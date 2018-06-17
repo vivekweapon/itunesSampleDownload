@@ -36,7 +36,7 @@ class Networking {
                     
                     for sample in resultsArray! {
                         
-                        let itunesSample = MusicSample(trackName: sample["trackName"] as! String, artistName: sample["artistName"] as! String, previewUrl: URL(string: sample["previewUrl"] as! String)!, index: 1)
+                        let itunesSample = MusicSample(trackName: sample["trackName"] as! String, artistName: sample["artistName"] as! String, previewUrl: URL(string: sample["previewUrl"] as! String)!, artworkUrl:URL(string:sample["artworkUrl60"] as! String)!)
                         
                         sampleMusicArray.append(itunesSample)
                         

@@ -29,7 +29,6 @@ class SearchViewController: UIViewController,downloadDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    var first:Bool = false
     
     let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     func localFilePath(for url: URL) -> URL {
@@ -81,6 +80,8 @@ class SearchViewController: UIViewController,downloadDelegate {
         
     }
     
+    //Mark:Download tap delegate
+    
     func didDownloadTapped(with index: Int) {
         print(index)
         let indexpath = IndexPath(row: index, section: 0)
@@ -89,13 +90,6 @@ class SearchViewController: UIViewController,downloadDelegate {
         currentCell.trackLayer.isHidden = false
         downloadclient.startDownload(self.tracks[index])
 
-
-        DispatchQueue.main.async {
-           // self.currentCell.shapeLayer.strokeEnd = CGFloat(self.progress)
-           // self.currentCell.downloadProgressLabel.text = "\(Int(self.progress * 100))%"
-        }
-        
-        
     }
 
 }
@@ -115,12 +109,12 @@ extension SearchViewController:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let sampleMusicCell = tableView.dequeueReusableCell(withIdentifier: "musicCell", for: indexPath) as! SearchSampleMusicCell
-        sampleMusicCell.albumTitle.text = tracks[indexPath.row].artistName
-        sampleMusicCell.artistName.text = tracks[indexPath.row].trackName
+       
         sampleMusicCell.tag = indexPath.row
         sampleMusicCell.delegate = self
-        sampleMusicCell.shapeLayer.isHidden = true
-        sampleMusicCell.trackLayer.isHidden = true
+       let musicsample = self.tracks[indexPath.row]
+        sampleMusicCell.configureCell(sample: musicsample, download: downloadclient.activeDownloads[musicsample.previewUrl], downloaded: musicsample.downloaded)
+        
         return sampleMusicCell
     }
     
@@ -144,11 +138,14 @@ extension SearchViewController: UISearchBarDelegate {
         self.tracks.removeAll()
         networkcall.downloadSampleTunes(searchString: searchBar.text!) { (response, error) in
             for track in response {
+                
                 self.tracks.append(track)
             }
             
             DispatchQueue.main.async(execute: {
+                
                 self.searchTableView.reloadData()
+                
             })
         }
         

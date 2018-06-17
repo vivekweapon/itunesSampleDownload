@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 protocol downloadDelegate:class {
     func didDownloadTapped(with index:Int)
@@ -23,6 +24,14 @@ class SearchSampleMusicCell:UITableViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.sizeToFit()
         return title
+    }()
+    
+    var albumIamgeView:UIImageView = {
+       let imageview = UIImageView()
+        imageview.layer.masksToBounds = true
+        imageview.layer.cornerRadius = 8.0
+        imageview.translatesAutoresizingMaskIntoConstraints = false
+        return imageview
     }()
     
     var artistName:UILabel = {
@@ -85,18 +94,17 @@ class SearchSampleMusicCell:UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String!) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        shapeLayer.isHidden = true
+        shapeLayer.isHidden = true
         setUpUI()
         downloadButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action:#selector(handleTap)))
         
     }
     
     @objc private func handleTap() {
-//        animation = CABasicAnimation(keyPath: "strokeEnd")
-//        animation.toValue = 1
-//        animation.fillMode = kCAFillModeForwards
-//        animation.isRemovedOnCompletion = false
-//        shapeLayer.add(animation, forKey: "downloadProgress")
+
         self.delegate?.didDownloadTapped(with: self.tag)
+        
     }
     
     private func createShapeLayer() {
@@ -117,6 +125,7 @@ class SearchSampleMusicCell:UITableViewCell {
         contentView.addSubview(albumTitle)
         contentView.addSubview(artistName)
         contentView.addSubview(downloadButton)
+        contentView.addSubview(albumIamgeView)
         downloadButton.addSubview(downloadProgressLabel)
         setAutoLayoutConstraints()
         createTrackLayer()
@@ -128,11 +137,17 @@ class SearchSampleMusicCell:UITableViewCell {
     
     private func setAutoLayoutConstraints() {
         
-        albumTitle.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15.0).isActive = true
+        albumIamgeView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15.0).isActive = true
+        albumIamgeView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        albumIamgeView.widthAnchor.constraint(equalToConstant: 50.0).isActive = true
+        albumIamgeView.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+
+        
+        albumTitle.leadingAnchor.constraint(equalTo: albumIamgeView.leadingAnchor, constant: 58.0).isActive = true
         albumTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         albumTitle.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40).isActive = true
         
-        artistName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15.0).isActive = true
+        artistName.leadingAnchor.constraint(equalTo: albumIamgeView.leadingAnchor, constant: 58.0).isActive = true
         artistName.topAnchor.constraint(equalTo: albumTitle.bottomAnchor, constant: 8.0).isActive = true
         
         downloadButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -145,7 +160,15 @@ class SearchSampleMusicCell:UITableViewCell {
         
     }
     
-    func configureCell(){
+    func configureCell(sample:MusicSample,download:MusicDownload?,downloaded:Bool){
+       
+        albumTitle.text = sample.trackName
+        artistName.text = sample.artistName
+        albumIamgeView.kf.setImage(with: sample.artworkUrl)
+        if(downloaded == true) {
+            shapeLayer.isHidden = true
+            shapeLayer.isHidden = true
+        }
         
     }
     
